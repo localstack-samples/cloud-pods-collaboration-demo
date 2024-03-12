@@ -45,7 +45,7 @@ resource "aws_iam_policy" "lambda_dynamodb_policy" {
     Statement = [
       {
         Action = [
-#          "dynamodb:GetItem",
+          "dynamodb:GetItem",
           "dynamodb:Scan",
           "dynamodb:Query",
           "dynamodb:UpdateItem",
@@ -190,4 +190,9 @@ resource "aws_api_gateway_deployment" "api_deployment" {
 
   rest_api_id = aws_api_gateway_rest_api.api.id
   stage_name  = "dev"
+}
+
+output "rest_api_id" {
+  description = "Rest API id"
+  value       = aws_api_gateway_rest_api.api.id
 }

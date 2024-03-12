@@ -4,14 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.URI;
 import java.util.Objects;
 
-import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
-import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
 import software.amazon.awssdk.core.client.config.ClientOverrideConfiguration;
 import software.amazon.awssdk.core.retry.RetryPolicy;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
-import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.sns.SnsClient;
 
 public class ProductApi {
 
@@ -38,8 +35,7 @@ public class ProductApi {
                   .build() :
   DynamoDbClient.builder()
       .endpointOverride(URI.create(AWS_ENDPOINT_URL))
-      .credentialsProvider(
-          StaticCredentialsProvider.create(AwsBasicCredentials.create("test", "test")))
+      .credentialsProvider(EnvironmentVariableCredentialsProvider.create())
       .region(Region.of("us-east-1"))
       .endpointDiscoveryEnabled(true)
       .overrideConfiguration(clientOverrideConfig)
