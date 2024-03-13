@@ -1,5 +1,6 @@
 #!/bin/bash
 api_id=$(cd terraform; tflocal output --raw rest_api_id)
+echo ${api_id}
 curl --location "http://${api_id}.execute-api.localhost.localstack.cloud:4566/dev/productApi" \
 --header 'Content-Type: application/json' \
 --data '{

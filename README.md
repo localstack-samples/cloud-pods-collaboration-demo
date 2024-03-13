@@ -10,7 +10,7 @@
 
 ## Description
 
-![fis-experiment-1](images/fis-experiment-1.png)
+![cloud-pod-collab](images/cloud-pod-collab.png)
 
 ## Prerequisites
 
