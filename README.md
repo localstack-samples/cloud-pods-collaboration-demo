@@ -14,6 +14,6 @@
 
 ## Prerequisites
 
-- [Maven 3.8.5](https://maven.apache.org/install.html) & [Java 21](https://www.java.com/en/download/help/download_options.html)
+- [Maven  3.9.4](https://maven.apache.org/install.html) & [Java 21](https://www.java.com/en/download/help/download_options.html)
 - [LocalStack](https://localstack.cloud/)
 - [Docker](https://docs.docker.com/get-docker/) - for running LocalStack
