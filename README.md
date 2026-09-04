@@ -6,10 +6,10 @@ A sample product API built with API Gateway, Lambda (Java), and DynamoDB, design
 
 ## Prerequisites
 
-- A valid [LocalStack for AWS license](https://localstack.cloud/pricing), which provides a [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/getting-started/auth-token/) required to run this sample.
+- A valid [LocalStack for AWS license](https://localstack.cloud/pricing), which provides a [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/aws/getting-started/auth-token/) required to run this sample.
 - [Docker](https://docs.docker.com/get-docker/) for running LocalStack.
 - [Maven](https://maven.apache.org/install.html) and [Java 21](https://adoptium.net/) for building the Lambda functions.
-- [Terraform](https://developer.hashicorp.com/terraform/install) or [OpenTofu](https://opentofu.org/docs/intro/install/) with [`tflocal`](https://github.com/localstack/terraform-local).
+- [Terraform](https://developer.hashicorp.com/terraform/install) or [OpenTofu](https://opentofu.org/docs/intro/install/) with [`lstk`](https://docs.localstack.cloud/aws/developer-tools/running-localstack/lstk/), installed via `npm install -g @localstack/lstk` or `brew install localstack/tap/lstk`.
 
 ```bash
 export LOCALSTACK_AUTH_TOKEN=<your-auth-token>
@@ -48,7 +48,7 @@ cd terraform
 ./invoke.sh
 ```
 
-For OpenTofu, set `TF_CMD=tofu` and run `tflocal` in `opentofu/` (see `opentofu/instructions.md`).
+For OpenTofu, set `TF_CMD=tofu` and run `lstk tf` in `opentofu/` (see `opentofu/instructions.md`).
 
 ## License
 

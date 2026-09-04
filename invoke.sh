@@ -1,6 +1,6 @@
 #!/bin/bash
 
-rest_api_id=$(cd terraform; tflocal output --raw rest_api_id)
+rest_api_id=$(cd terraform; lstk tf output --raw rest_api_id)
 echo ${rest_api_id}
 
 curl --location "http://${rest_api_id}.execute-api.localhost.localstack.cloud:4566/dev/productApi" \
