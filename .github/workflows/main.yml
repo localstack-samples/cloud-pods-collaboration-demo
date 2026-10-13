@@ -1,0 +1,75 @@
+name: Deploy on LocalStack
+
+on:
+  push:
+    paths-ignore:
+      - 'README.md'
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy with ${{ matrix.tool }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        tool: [terraform, opentofu]
+    env:
+      TF_DIR: ${{ matrix.tool }}
+      LSTK_TF_CMD: ${{ matrix.tool == 'opentofu' && 'tofu' || 'terraform' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Setup Terraform
+        if: matrix.tool == 'terraform'
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+
+      - name: Setup OpenTofu
+        if: matrix.tool == 'opentofu'
+        uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_wrapper: false
+
+      - name: Install lstk
+        run: |
+          npm install -g @localstack/lstk
+          lstk setup aws --force --non-interactive
+
+      - name: Build the Lambda functions
+        run: cd lambda-functions && mvn -B clean package
+
+      - name: Start LocalStack
+        env:
+          LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
+          LOCALSTACK_ENFORCE_IAM: 1
+        run: lstk start
+
+      - name: Deploy the infrastructure
+        run: cd $TF_DIR && ./run-tflocal.sh
+
+      - name: Run tests
+        run: ./test.sh
+
+      - name: Show LocalStack logs
+        if: failure()
+        run: lstk logs | tail -200

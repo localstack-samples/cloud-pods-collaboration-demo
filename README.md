@@ -48,7 +48,15 @@ cd terraform
 ./invoke.sh
 ```
 
-For OpenTofu, set `TF_CMD=tofu` and run `lstk tf` in `opentofu/` (see `opentofu/instructions.md`).
+For OpenTofu, set `LSTK_TF_CMD=tofu` and run `lstk tf` in `opentofu/` (see `opentofu/instructions.md`).
+
+5. Test the scenario from the tutorial:
+
+```bash
+./test.sh
+```
+
+The test needs LocalStack to enforce IAM, as `docker-compose.yml` does with `ENFORCE_IAM=1`. With `lstk`, start it with `LOCALSTACK_ENFORCE_IAM=1 lstk start`. It adds two products, checks that reading one fails because the policy is missing `dynamodb:GetItem`, then adds the permission and checks the read works. It restores the original policy version when it exits. Set `TF_DIR=opentofu` to test the OpenTofu deployment.
 
 ## License
 

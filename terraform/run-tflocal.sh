@@ -1,3 +1,6 @@
+#!/bin/bash
+set -euo pipefail
+
 lstk tf init
 lstk tf plan
 lstk tf apply --auto-approve
