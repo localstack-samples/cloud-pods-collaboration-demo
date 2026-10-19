@@ -76,8 +76,17 @@ FIXED_VERSION=$(lstk aws iam create-policy-version --policy-arn "$POLICY_ARN" --
   }')
 echo "Added dynamodb:GetItem to the policy (version $FIXED_VERSION)"
 
-response=$(curl -s -m 120 "$URL?id=34534")
-if ! echo "$response" | jq -e '.id == "34534" and .name == "EcoFriendly Water Bottle"' > /dev/null 2>&1; then
+# IAM changes take effect eventually (on AWS too), so give the new policy version a moment
+fixed=""
+for attempt in $(seq 1 "$MAX_ATTEMPTS"); do
+  response=$(curl -s -m 120 "$URL?id=34534")
+  if echo "$response" | jq -e '.id == "34534" and .name == "EcoFriendly Water Bottle"' > /dev/null 2>&1; then
+    fixed=1
+    break
+  fi
+  sleep 2
+done
+if [ -z "$fixed" ]; then
   echo "Test failed: GET returned '$response' after the fix"
   exit 1
 fi
